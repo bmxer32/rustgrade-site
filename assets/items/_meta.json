@@ -1,0 +1,50 @@
+[
+ {
+  "slug": "hunter-smg",
+  "name": "Hunter SMG",
+  "weapon": "Пистолет-пулемёт",
+  "price": 145.43,
+  "rarity": "Необычный",
+  "color": "#467edf"
+ },
+ {
+  "slug": "aircraft-parts-ak47",
+  "name": "Aircraft Parts AK47",
+  "weapon": "Автомат",
+  "price": 151.19,
+  "rarity": "Необычный",
+  "color": "#467edf"
+ },
+ {
+  "slug": "redemption-revolver",
+  "name": "Redemption Revolver",
+  "weapon": "Револьвер",
+  "price": 336.06,
+  "rarity": "Редкий",
+  "color": "#ae6eee"
+ },
+ {
+  "slug": "comics-jackhammer",
+  "name": "Comics Jackhammer",
+  "weapon": "Оружие",
+  "price": 580.1,
+  "rarity": "Особый",
+  "color": "#d2290f"
+ },
+ {
+  "slug": "after-death-ar",
+  "name": "After Death AR",
+  "weapon": "Автомат",
+  "price": 5615.26,
+  "rarity": "Легендарный",
+  "color": "#ffdd59"
+ },
+ {
+  "slug": "alien-relic-smg",
+  "name": "Alien Relic SMG",
+  "weapon": "Пистолет-пулемёт",
+  "price": 144633.58,
+  "rarity": "Легендарный",
+  "color": "#ffdd59"
+ }
+]

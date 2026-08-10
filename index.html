@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RustGrade — симулятор апгрейда скинов</title>
+<meta name="description" content="Ставите скин, выбираете цель, крутите колесо. Шанс виден до прокрутки. Баланс и предметы игровые: реальные деньги не принимаются и не выигрываются. Скоро в Google Play.">
+<meta name="theme-color" content="#080706">
+<link rel="canonical" href="https://rustgrade.pro/">
+
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="RustGrade">
+<meta property="og:title" content="RustGrade — весь азарт апгрейда. Ни одного рубля.">
+<meta property="og:description" content="Симулятор апгрейда скинов: 5 277 предметов, честный шанс на колесе, никаких реальных денег. Скоро в Google Play.">
+<meta property="og:url" content="https://rustgrade.pro/">
+<meta property="og:image" content="https://rustgrade.pro/assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="ru_RU">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="assets/logo.svg" type="image/svg+xml">
+<link rel="icon" href="assets/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+
+<link rel="preload" as="font" type="font/woff2" href="assets/fonts/Unbounded-cyrillic.woff2" crossorigin>
+<link rel="preload" as="font" type="font/woff2" href="assets/fonts/Manrope-cyrillic.woff2" crossorigin>
+<link rel="stylesheet" href="assets/fonts.css">
+<link rel="stylesheet" href="assets/site.css">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebSite",
+      "@id": "https://rustgrade.pro/#website",
+      "url": "https://rustgrade.pro/",
+      "name": "RustGrade",
+      "inLanguage": "ru-RU",
+      "description": "Игровой симулятор апгрейда скинов для Android."
+    },
+    {
+      "@type": "MobileApplication",
+      "@id": "https://rustgrade.pro/#app",
+      "name": "RustGrade",
+      "url": "https://rustgrade.pro/",
+      "applicationCategory": "GameApplication",
+      "applicationSubCategory": "Симулятор",
+      "operatingSystem": "Android",
+      "inLanguage": "ru-RU",
+      "softwareVersion": "1.0.0",
+      "image": "https://rustgrade.pro/assets/og.jpg",
+      "description": "Симулятор апгрейда скинов: ставите предмет, выбираете цель подороже и крутите колесо. Шанс виден до прокрутки. Баланс и предметы игровые, реальные деньги не принимаются и не выигрываются.",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "RUB" },
+      "author": { "@type": "Organization", "name": "RustGrade", "email": "narodniy.team@gmail.com" },
+      "privacyPolicy": "https://rustgrade.pro/privacy/"
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://rustgrade.pro/#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Когда приложение появится в Google Play?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Сборка 1.0.0 сейчас на проверке. Как только Google её одобрит, кнопка на этой странице станет ссылкой на страницу приложения." }
+        },
+        {
+          "@type": "Question",
+          "name": "Как считается шанс апгрейда?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Шанс равен отношению стоимости ставки к стоимости цели и упирается в потолок 75 процентов. Он показан в центре колеса до прокрутки и не меняется, пока стрелка летит. Ставка из нескольких предметов складывается, и шанс считается от их общей стоимости." }
+        },
+        {
+          "@type": "Question",
+          "name": "Можно ли вывести выигранные предметы в Steam?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Нет. Предметы нельзя купить за деньги, продать, обменять или вывести за пределы приложения. Steam-аккаунт к приложению не привязывается и не запрашивается." }
+        },
+        {
+          "@type": "Question",
+          "name": "Нужен ли аккаунт, чтобы играть?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Нет. Игра полностью работает в гостевом режиме, прогресс хранится на устройстве. Вход через Google нужен только для того, чтобы перенести прогресс на другое устройство." }
+        },
+        {
+          "@type": "Question",
+          "name": "Откуда берутся цены предметов?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Из открытых данных Steam Community Market. Они справочные, обновляются не мгновенно и офертой не являются. Внутри симулятора это просто числа, по которым считается шанс." }
+        },
+        {
+          "@type": "Question",
+          "name": "Есть ли реклама и покупки внутри приложения?",
+          "acceptedAnswer": { "@type": "Answer", "text": "Покупок нет вообще. Реклама есть в одном месте: за просмотр ролика выдаётся игровой кейс на 75–150 рублей игрового баланса. Смотреть необязательно." }
+        }
+      ]
+    }
+  ]
+}
+</script>
+</head>
+<body>
+
+<a class="skip" href="#main">Перейти к содержанию</a>
+
+<header class="topbar">
+  <div class="topbar__in">
+    <a class="brand" href="/" aria-label="RustGrade, на главную">
+      <svg class="brand__mark" viewBox="0 0 512 512" aria-hidden="true" focusable="false">
+        <rect width="512" height="512" rx="140" fill="#C43426"/>
+        <path d="M 256 130 L 384 226 L 384 277 L 256 181 L 128 277 L 128 226 Z" fill="#fff"/>
+        <path d="M 256 235 L 384 331 L 384 382 L 256 286 L 128 382 L 128 331 Z" fill="#fff"/>
+      </svg>
+      <span class="brand__name">RustGrade</span>
+    </a>
+    <p class="topbar__status"><span class="dot" aria-hidden="true"></span>Сборка 1.0.0 на проверке в Google&nbsp;Play</p>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- ───────────────────────── HERO ───────────────────────── -->
+  <section class="hero">
+    <div class="hero__copy">
+      <p class="eyebrow">Симулятор апгрейда скинов · Android</p>
+      <h1 class="hero__title">
+        <span>Весь азарт</span>
+        <span>апгрейда.</span>
+        <span class="hero__title-alt">Ни одного</span>
+        <span class="hero__title-alt">рубля.</span>
+      </h1>
+      <p class="lede">
+        Ставите скин, выбираете цель подороже, крутите колесо. Шанс посчитан
+        до прокрутки и написан в центре — он не меняется, пока стрелка летит.
+        Баланс и предметы игровые: настоящие деньги здесь не принимают,
+        не выплачивают и не выигрывают.
+      </p>
+
+      <div class="cta">
+        <div class="play" aria-labelledby="play-t">
+          <img class="play__icon" src="assets/google-play.webp" alt="" width="143" height="160" loading="eager" decoding="async">
+          <span class="play__text">
+            <span class="play__small">Скоро в</span>
+            <span class="play__big" id="play-t">Google Play</span>
+          </span>
+        </div>
+        <p class="cta__note">
+          Ссылка появится здесь, как только Google одобрит сборку.
+          Вопросы до релиза — <a href="mailto:narodniy.team@gmail.com">narodniy.team@gmail.com</a>
+        </p>
+      </div>
+    </div>
+
+    <!-- ── СИГНАТУРА: живое колесо апгрейда ── -->
+    <div class="rig" id="rig">
+      <p class="rig__label">Колесо апгрейда · попробуйте прямо здесь</p>
+
+      <div class="wheel" id="wheel" role="img" aria-labelledby="wheel-alt">
+        <div class="wheel__disc"><i class="cross cross--h"></i><i class="cross cross--v"></i></div>
+        <div class="wheel__track"></div>
+        <div class="wheel__track wheel__track--thin"></div>
+        <div class="wheel__glow"></div>
+        <div class="wheel__arc"></div>
+        <div class="wheel__arc wheel__arc--thin"></div>
+        <div class="wheel__pin" id="pin">
+          <svg viewBox="0 0 256 256" aria-hidden="true" focusable="false">
+            <defs>
+              <linearGradient id="pinG" x1="0" y1="251.5" x2="0" y2="221.5" gradientUnits="userSpaceOnUse">
+                <stop offset="0" stop-color="#e7614c"/><stop offset="1" stop-color="#cd412b"/>
+              </linearGradient>
+            </defs>
+            <g class="pin__shield">
+              <path fill="url(#pinG)" d="M118.2 251.5 L137.8 251.5 L140 238.9 L128 221.5 L116 238.9 Z"/>
+              <path class="pin__slot" d="M128 228.1 L131.1 241.9 L128 246.7 L124.9 241.9 Z"/>
+            </g>
+          </svg>
+        </div>
+        <span class="tick tick--top">100%</span>
+        <span class="tick tick--left">50%</span>
+        <span class="tick tick--right">50%</span>
+        <p class="wheel__read">
+          <output class="wheel__pct" id="pct">25,07%</output>
+          <span class="wheel__cat" id="cat">низкий шанс</span>
+        </p>
+        <span class="vh" id="wheel-alt">Колесо апгрейда, шанс 25,07 процента</span>
+      </div>
+
+      <div class="slots">
+        <div class="slot slot--src">
+          <p class="slot__cap">Ваша ставка</p>
+          <img src="assets/items/hunter-smg.webp" alt="Hunter SMG" width="300" height="225" loading="lazy" decoding="async">
+          <p class="slot__name" style="color:#467edf">Hunter SMG</p>
+          <p class="slot__price">145,43 ₽</p>
+        </div>
+        <span class="slots__arrow" aria-hidden="true">→</span>
+        <div class="slot slot--dst">
+          <p class="slot__cap">Цель</p>
+          <img src="assets/items/comics-jackhammer.webp" alt="" id="dst-img" width="300" height="225" loading="lazy" decoding="async">
+          <p class="slot__name" id="dst-name">Comics Jackhammer</p>
+          <p class="slot__price" id="dst-price">580,10 ₽</p>
+        </div>
+      </div>
+
+      <button class="spin" id="spin" type="button">
+        <svg class="spin__mark" viewBox="0 0 512 512" aria-hidden="true" focusable="false">
+          <path d="M 256 130 L 384 226 L 384 277 L 256 181 L 128 277 L 128 226 Z"/>
+          <path d="M 256 235 L 384 331 L 384 382 L 256 286 L 128 382 L 128 331 Z"/>
+        </svg>
+        Прокачать
+      </button>
+
+      <p class="rig__hint" id="verdict" role="status">Демо на настоящем каталоге. Прогресс никуда не сохраняется.</p>
+
+      <fieldset class="targets">
+        <legend class="rig__label">Выбрать цель</legend>
+        <div class="targets__row" id="targets"></div>
+      </fieldset>
+
+      <p class="rig__tally" id="tally">прокруток 0 · побед 0</p>
+    </div>
+  </section>
+
+  <!-- ───────────────────────── ЛЕНТА КАТАЛОГА ───────────────────────── -->
+  <div class="tape" aria-hidden="true">
+    <div class="tape__run" id="tape"></div>
+  </div>
+  <p class="tape__cap">5 277 предметов из мира выживания. Цены справочные, из открытых данных Steam&nbsp;Community&nbsp;Market.</p>
+
+  <!-- ───────────────────────── ТРИ ШАГА ───────────────────────── -->
+  <section class="band" id="how">
+    <hr class="rule">
+    <h2 class="h2">Одна прокрутка — три решения</h2>
+    <p class="band__lede">
+      Апгрейд идёт только вверх: цель должна быть дороже ставки. Чем больше
+      разрыв в цене, тем уже зона выигрыша на колесе — и тем честнее выглядит
+      число, которое вы видите перед прокруткой.
+    </p>
+    <ol class="flow">
+      <li class="flow__step">
+        <p class="flow__cap">Ставка</p>
+        <h3 class="flow__h">Собираете лот</h3>
+        <p>Один предмет из инвентаря или сразу несколько — их стоимость
+           складывается в одну ставку.</p>
+      </li>
+      <li class="flow__step">
+        <p class="flow__cap">Цель</p>
+        <h3 class="flow__h">Выбираете, за чем идёте</h3>
+        <p>Шанс считается как отношение цен и упирается в потолок 75 %.
+           Не хватает процентов — их можно докупить балансом.</p>
+      </li>
+      <li class="flow__step">
+        <p class="flow__cap">Прокрутка</p>
+        <h3 class="flow__h">Крутите колесо</h3>
+        <p>Стрелка останавливается в зоне выигрыша или мимо. При промахе
+           возвращается утешительный приз — 10–15 % от ставки.</p>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ───────────────────────── ЭКРАНЫ ───────────────────────── -->
+  <section class="band" id="screens">
+    <hr class="rule">
+    <h2 class="h2">Четыре экрана, и всё</h2>
+
+    <div class="shot">
+      <img src="assets/shots/upgrade.webp" alt="Экран апгрейда: колесо с шансом 25,07 %, карточки ставки и цели, кнопка «Прокачать»" width="760" height="1216" loading="lazy" decoding="async">
+      <div class="shot__body">
+        <p class="eyebrow">Апгрейд</p>
+        <h3 class="shot__h">Колесо, которое не врёт</h3>
+        <p>Процент написан в центре до того, как вы нажмёте кнопку, и зона
+          выигрыша на кольце ровно ему соответствует. Ползунок «докупить шанс»
+          поднимает процент за баланс — видно, сколько стоит каждый пункт.
+          Кому некогда ждать шесть секунд, есть быстрая прокрутка.</p>
+      </div>
+    </div>
+
+    <div class="shot shot--flip">
+      <img src="assets/shots/arsenal.webp" alt="Экран инвентаря: карточка предмета Hunter SMG с ценой и кнопкой «Продать»" width="760" height="1216" loading="lazy" decoding="async">
+      <div class="shot__body">
+        <p class="eyebrow">Инвентарь</p>
+        <h3 class="shot__h">Что выиграно — то ваше</h3>
+        <p>Баланс и ценность инвентаря считаются раздельно, поэтому всегда
+          понятно, чем вы располагаете. Любой предмет продаётся в один тап,
+          весь инвентарь — одной кнопкой.</p>
+      </div>
+    </div>
+
+    <div class="shot">
+      <img src="assets/shots/store.webp" alt="Экран магазина: сетка предметов с ценами, поиск и сортировка" width="760" height="1216" loading="lazy" decoding="async">
+      <div class="shot__body">
+        <p class="eyebrow">Магазин</p>
+        <h3 class="shot__h">Весь каталог целиком</h3>
+        <p>Оружие, броня, одежда, постройки — 5 277 позиций со справочными
+          ценами. Поиск по названию, сортировка от дорогих к дешёвым и обратно.
+          Купить можно только за игровой баланс.</p>
+      </div>
+    </div>
+
+    <div class="shot shot--flip">
+      <img src="assets/shots/filters.webp" alt="Экран фильтров: диапазоны цены, категории, тип оружия и редкость" width="760" height="1216" loading="lazy" decoding="async">
+      <div class="shot__body">
+        <p class="eyebrow">Фильтры</p>
+        <h3 class="shot__h">Найти цель под ставку</h3>
+        <p>Цена диапазоном или вручную от и до, категория, тип оружия,
+          редкость. Пять полос редкости считаются по перцентилю цены:
+          у предметов выживания своих градаций нет.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────────────────────── ХАРАКТЕРИСТИКИ ───────────────────────── -->
+  <section class="band" id="spec">
+    <hr class="rule">
+    <h2 class="h2">Цифры, на которых всё держится</h2>
+    <dl class="spec">
+      <div><dt>Предметов в каталоге</dt><dd>5 277</dd></div>
+      <div><dt>Потолок шанса</dt><dd>75,00 %</dd></div>
+      <div><dt>Стартовый баланс</dt><dd>300 ₽ игровых</dd></div>
+      <div><dt>Утешительный приз при промахе</dt><dd>10–15 % ставки</dd></div>
+      <div><dt>Кейс за рекламный ролик</dt><dd>75–150 ₽ игровых</dd></div>
+      <div><dt>Джекпот в кейсе</dt><dd>750–1 500 ₽, шанс 5 %</dd></div>
+      <div><dt>Покупки внутри приложения</dt><dd>нет</dd></div>
+      <div><dt>Вход в аккаунт</dt><dd>не обязателен</dd></div>
+      <div><dt>Синхронизация прогресса</dt><dd>Google, по желанию</dd></div>
+      <div><dt>Платформа</dt><dd>Android</dd></div>
+    </dl>
+  </section>
+
+  <!-- ───────────────────────── ВОПРОСЫ ───────────────────────── -->
+  <section class="band" id="faq">
+    <hr class="rule">
+    <h2 class="h2">Что обычно спрашивают</h2>
+    <dl class="faq">
+      <div>
+        <dt>Когда приложение появится в Google Play?</dt>
+        <dd>Сборка 1.0.0 сейчас на проверке. Как только Google её одобрит,
+          кнопка на этой странице станет ссылкой на страницу приложения.</dd>
+      </div>
+      <div>
+        <dt>Как считается шанс апгрейда?</dt>
+        <dd>Шанс равен отношению стоимости ставки к стоимости цели и упирается
+          в потолок 75 %. Он показан в центре колеса до прокрутки и не меняется,
+          пока стрелка летит. Ставка из нескольких предметов складывается,
+          и шанс считается от их общей стоимости.</dd>
+      </div>
+      <div>
+        <dt>Можно ли вывести выигранные предметы в Steam?</dt>
+        <dd>Нет. Предметы нельзя купить за деньги, продать, обменять или вывести
+          за пределы приложения. Steam-аккаунт к приложению не привязывается
+          и не запрашивается.</dd>
+      </div>
+      <div>
+        <dt>Нужен ли аккаунт, чтобы играть?</dt>
+        <dd>Нет. Игра полностью работает в гостевом режиме, прогресс хранится
+          на устройстве. Вход через Google нужен только для того, чтобы
+          перенести прогресс на другое устройство.</dd>
+      </div>
+      <div>
+        <dt>Откуда берутся цены предметов?</dt>
+        <dd>Из открытых данных Steam Community Market. Они справочные,
+          обновляются не мгновенно и офертой не являются. Внутри симулятора
+          это просто числа, по которым считается шанс.</dd>
+      </div>
+      <div>
+        <dt>Есть ли реклама и покупки внутри приложения?</dt>
+        <dd>Покупок нет вообще. Реклама есть в одном месте: за просмотр ролика
+          выдаётся игровой кейс на 75–150 ₽ игрового баланса. Смотреть
+          необязательно.</dd>
+      </div>
+    </dl>
+  </section>
+
+  <!-- ───────────────────────── ЧЕСТНО ───────────────────────── -->
+  <section class="band" id="honest">
+    <hr class="rule">
+    <div class="honest">
+      <h2 class="h2 h2--tight">Честно о симуляторе</h2>
+      <div class="honest__cols">
+        <p><b>Денег здесь нет.</b> Баланс и предметы вымышленные. Реальные
+          деньги не принимаются, не выплачиваются и не выигрываются. Предметы
+          нельзя купить за деньги, продать, обменять или вывести в Steam —
+          и никакой другой игровой аккаунт к приложению не привязывается.</p>
+        <p><b>Это имитация азартной механики.</b> Прокрутка устроена как
+          в настоящих апгрейдерах, и приложение не предназначено для детей.
+          Если игра перестала быть игрой — удалите её, прогресс всё равно
+          ничего не стоит.</p>
+        <p><b>Мы сами по себе.</b> Приложение создано независимо, не связано
+          с Facepunch Studios Ltd и Valve Corporation, не одобрено и не
+          спонсируется ими. Rust — товарный знак Facepunch Studios Ltd;
+          названия и изображения предметов принадлежат правообладателям
+          и используются, чтобы описать предметы внутри симулятора.</p>
+        <p><b>Цены справочные.</b> Они берутся из открытых данных Steam
+          Community Market, обновляются не мгновенно и офертой не являются.
+          Внутри симулятора это просто числа, по которым считается шанс.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-foot">
+  <hr class="rule">
+  <div class="site-foot__in">
+    <div class="site-foot__brand">
+      <svg class="brand__mark" viewBox="0 0 512 512" aria-hidden="true" focusable="false">
+        <rect width="512" height="512" rx="140" fill="#C43426"/>
+        <path d="M 256 130 L 384 226 L 384 277 L 256 181 L 128 277 L 128 226 Z" fill="#fff"/>
+        <path d="M 256 235 L 384 331 L 384 382 L 256 286 L 128 382 L 128 331 Z" fill="#fff"/>
+      </svg>
+      <p><span class="brand__name">RustGrade</span><br><span class="site-foot__dom">rustgrade.pro</span></p>
+    </div>
+    <nav class="site-foot__nav" aria-label="Документы">
+      <a href="privacy/">Политика конфиденциальности</a>
+      <a href="delete-account/">Удаление аккаунта и данных</a>
+      <a href="mailto:narodniy.team@gmail.com">narodniy.team@gmail.com</a>
+    </nav>
+  </div>
+  <p class="site-foot__fine">
+    © 2026 RustGrade. Игровой симулятор. Реальные деньги не принимаются
+    и не выигрываются. Rust — товарный знак Facepunch Studios Ltd;
+    приложение с Facepunch Studios Ltd и Valve Corporation не связано.
+  </p>
+</footer>
+
+<script src="assets/site.js" defer></script>
+</body>
+</html>

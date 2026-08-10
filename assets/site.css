@@ -1,0 +1,648 @@
+/* ============================================================
+   RustGrade — rustgrade.pro
+   Палитра снята с промо-арта и с самого приложения:
+   выжженный бетон, ржавое железо, тёплый накал медной нити.
+   ============================================================ */
+
+@property --sweep { syntax: '<angle>'; inherits: true; initial-value: 0deg; }
+
+:root {
+  --void:      #080706;
+  --iron:      #131110;
+  --steel:     #1c1917;
+  --edge:      rgba(242, 237, 230, .09);
+  --edge-hot:  rgba(242, 237, 230, .18);
+
+  --rust:      #cd412b;
+  --rust-lt:   #e7614c;
+  --ember:     #fa3c1f;
+  --gold:      #ffe32c;
+  --filament:  #ffc24d;
+  --moss:      #7c954d;
+
+  --ash:       #8e8781;
+  --ash-lt:    #b6afa8;
+  --bone:      #f2ede6;
+
+  --tier-1: #939893;  /* обычный      */
+  --tier-2: #467edf;  /* необычный    */
+  --tier-3: #ae6eee;  /* редкий       */
+  --tier-4: #d2290f;  /* особый       */
+  --tier-5: #ffdd59;  /* легендарный  */
+
+  --wrap: min(1180px, 100% - 2.6rem);
+  --gap:  clamp(4.5rem, 9vw, 8rem);
+
+  --disp: 'Unbounded', 'Manrope', system-ui, sans-serif;
+  --body: 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, 'Cascadia Mono', monospace;
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--void);
+  color: var(--bone);
+  font: 400 1rem/1.65 var(--body);
+  overflow-x: hidden;
+  /* Тёплое зарево над сгибом — то же, что светит из медных трубок на арте */
+  background-image:
+    radial-gradient(58% 42% at 74% 4%,  rgba(255, 150, 60, .10), transparent 68%),
+    radial-gradient(70% 40% at 12% 0%,  rgba(205, 65, 43, .07),  transparent 70%);
+  background-repeat: no-repeat;
+}
+
+/* Бетонная крупа поверх всего: без неё чёрный фон выглядит пластиковым */
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  pointer-events: none; z-index: 9;
+  opacity: .05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+img { max-width: 100%; height: auto; display: block; }
+
+a { color: var(--filament); text-decoration-thickness: 1px; text-underline-offset: .18em; }
+a:hover { color: var(--bone); }
+
+:focus-visible { outline: 2px solid var(--filament); outline-offset: 3px; border-radius: 2px; }
+
+.vh {
+  position: absolute; width: 1px; height: 1px;
+  margin: -1px; padding: 0; overflow: hidden;
+  clip-path: inset(50%); white-space: nowrap;
+}
+
+.skip {
+  position: absolute; left: .8rem; top: -4rem; z-index: 50;
+  padding: .6rem 1rem; background: var(--rust); color: #fff;
+  font: 500 .85rem var(--mono); border-radius: 3px; text-decoration: none;
+  transition: top .18s;
+}
+.skip:focus { top: .8rem; color: #fff; }
+
+/* ─────────────────── типографика ─────────────────── */
+
+.eyebrow {
+  margin: 0 0 1.15rem;
+  font: 500 .72rem/1.3 var(--mono);
+  letter-spacing: .2em; text-transform: uppercase; color: var(--ash);
+}
+
+.h2 {
+  margin: 0 0 1.1rem;
+  font: 800 clamp(1.7rem, 3.5vw, 2.6rem)/1.02 var(--disp);
+  letter-spacing: -.022em; text-transform: uppercase;
+}
+.h2--tight { margin-bottom: 1.8rem; }
+
+.lede {
+  margin: 0 0 2.2rem;
+  max-width: 34ch;
+  font-size: clamp(1.02rem, 1.35vw, 1.16rem);
+  line-height: 1.6; color: var(--ash-lt);
+}
+
+/* Разделитель-«стык трубы»: волосяная линия с раскалённым узлом слева */
+.rule {
+  position: relative;
+  border: 0; height: 1px; margin: 0 0 clamp(2.6rem, 5vw, 4rem);
+  background: linear-gradient(90deg, var(--edge-hot), var(--edge) 40%, transparent);
+}
+.rule::after {
+  content: ''; position: absolute; left: 0; top: 50%;
+  width: 6px; height: 6px; margin: -3px 0 0 -1px;
+  border-radius: 50%; background: var(--filament);
+  box-shadow: 0 0 10px 2px rgba(255, 194, 77, .55);
+}
+
+/* ─────────────────── шапка ─────────────────── */
+
+.topbar {
+  position: sticky; top: 0; z-index: 20;
+  background: rgba(8, 7, 6, .82);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--edge);
+}
+.topbar__in {
+  width: var(--wrap); margin-inline: auto;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 1rem; min-height: 60px;
+}
+
+.brand { display: inline-flex; align-items: center; gap: .6rem; text-decoration: none; color: inherit; }
+.brand__mark { width: 27px; height: 27px; border-radius: 8px; flex: none; }
+.brand__name {
+  font: 800 1.02rem/1 var(--disp);
+  letter-spacing: -.01em; text-transform: uppercase; color: var(--bone);
+}
+
+.topbar__status {
+  margin: 0; display: none; align-items: center; gap: .5rem;
+  font: 500 .68rem/1 var(--mono); letter-spacing: .07em;
+  text-transform: uppercase; color: var(--ash);
+}
+/* На узком экране статус уезжает: то же самое написано в блоке
+   с кнопкой, дублировать в шапке незачем. */
+@media (min-width: 760px) { .topbar__status { display: inline-flex; } }
+.dot {
+  width: 6px; height: 6px; border-radius: 50%; flex: none;
+  background: var(--filament); box-shadow: 0 0 8px 1px rgba(255, 194, 77, .7);
+  animation: breathe 2.6s ease-in-out infinite;
+}
+@keyframes breathe { 50% { opacity: .28; } }
+
+/* ─────────────────── герой ─────────────────── */
+
+.hero {
+  width: var(--wrap); margin-inline: auto;
+  padding-block: clamp(3rem, 7vw, 6rem) clamp(3rem, 6vw, 5rem);
+  display: grid; grid-template-columns: minmax(0, 1fr);
+  gap: clamp(3rem, 5vw, 4.5rem); align-items: center;
+}
+@media (min-width: 1000px) {
+  .hero { grid-template-columns: minmax(0, 1fr) 430px; }
+}
+
+.hero__title {
+  margin: 0 0 1.6rem;
+  font: 900 clamp(2.15rem, 9.2vw, 4.9rem)/.93 var(--disp);
+  letter-spacing: -.035em; text-transform: uppercase;
+}
+.hero__title span { display: block; }
+.hero__title-alt {
+  color: transparent;
+  background: linear-gradient(96deg, var(--rust-lt) 12%, var(--filament) 92%);
+  -webkit-background-clip: text; background-clip: text;
+}
+
+.cta { display: flex; flex-direction: column; gap: 1rem; align-items: flex-start; }
+
+.play {
+  display: inline-flex; align-items: center; gap: .95rem;
+  padding: .72rem 1.5rem .72rem 1.05rem;
+  border: 1px solid var(--edge-hot); border-radius: 12px;
+  background: linear-gradient(180deg, rgba(242,237,230,.05), rgba(242,237,230,.01));
+}
+.play__icon { width: 33px; height: auto; flex: none; }
+.play__text { display: flex; flex-direction: column; line-height: 1.15; }
+.play__small { font: 500 .66rem var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--ash); }
+.play__big { font: 800 1.22rem var(--disp); letter-spacing: -.01em; color: var(--bone); }
+
+.cta__note { margin: 0; max-width: 40ch; font-size: .86rem; line-height: 1.55; color: var(--ash); }
+
+/* ─────────────────── СИГНАТУРА: колесо ─────────────────── */
+
+.rig {
+  --w: clamp(238px, 66vw, 306px);
+  position: relative; min-width: 0;
+  padding: clamp(1.4rem, 3vw, 1.9rem);
+  border: 1px solid var(--edge); border-radius: 18px;
+  background:
+    radial-gradient(120% 70% at 50% -10%, rgba(255, 150, 60, .09), transparent 62%),
+    linear-gradient(180deg, var(--iron), #0c0b0a);
+  box-shadow: 0 34px 80px -40px #000, inset 0 1px 0 rgba(242,237,230,.05);
+}
+
+.rig__label {
+  margin: 0 0 1.15rem;
+  font: 500 .64rem/1.3 var(--mono);
+  letter-spacing: .18em; text-transform: uppercase; color: var(--ash);
+  text-align: center;
+}
+
+/* Раскрытие дуги ведёт скрипт покадрово, а не transition по --sweep:
+   переход зарегистрированного свойства поддерживают не все браузеры,
+   и там, где не поддерживают, дуга прыгала бы рывком. */
+.wheel {
+  position: relative; width: var(--w); aspect-ratio: 1; margin: 0 auto;
+  font-size: calc(var(--w) / 300 * 1rem);   /* всё внутри масштабируется отсюда */
+  --sweep: 0deg;
+}
+
+/* Диск — кусок ржавой плиты, а не спицованный обод: так он выглядит
+   в приложении. Фактура приглушена ровно наполовину, иначе плита
+   выходит рыжей и спорит с дугой. */
+.wheel__disc {
+  position: absolute; left: 13.67%; top: 13.67%; width: 72.66%; height: 72.66%;
+  border-radius: 50%; overflow: hidden;
+  background: radial-gradient(circle at 50% 50%, #2a2725, #141312);
+  /* Свой контекст наложения: иначе затемнение по краю плиты всплывает
+     над кольцом и стирает дугу шанса. */
+  z-index: 0; isolation: isolate;
+}
+.wheel__disc::before,
+.wheel__disc::after { content: ''; position: absolute; inset: 0; }
+.wheel__disc::before { background: url('rust-plate.webp') center / cover; opacity: .4; }
+.wheel__disc::after {
+  z-index: 2;
+  /* Тень в центре держит контраст под числом, тень по краю не даёт
+     плите выглядеть наклеенной поверх кольца. */
+  background:
+    radial-gradient(circle at 50% 50%, rgba(0,0,0,.5), transparent 52%),
+    radial-gradient(circle at 50% 50%, transparent 62%, rgba(0,0,0,.6) 100%);
+}
+.cross { position: absolute; z-index: 1; background: rgba(0,0,0,.4); }
+.cross--h { left: 0; right: 0; top: 50%; height: 1.6px; }
+.cross--v { top: 0; bottom: 0; left: 50%; width: 1.6px; }
+
+/* Кольцо и дуга живут на одной средней линии радиусом 107 из 128:
+   толстая дорожка 74.22–92.97 %, тонкий обруч снаружи 96.88–98.44 %.
+   Пропорции сняты с колеса в приложении. */
+.wheel__track,
+.wheel__arc,
+.wheel__glow { position: absolute; inset: 0; border-radius: 50%; }
+
+.wheel__track { background: var(--steel); }
+
+.wheel__track,
+.wheel__arc {
+  -webkit-mask: radial-gradient(circle closest-side, transparent 74.22%, #000 74.22%, #000 92.97%, transparent 92.97%);
+          mask: radial-gradient(circle closest-side, transparent 74.22%, #000 74.22%, #000 92.97%, transparent 92.97%);
+}
+.wheel__track--thin,
+.wheel__arc--thin {
+  -webkit-mask: radial-gradient(circle closest-side, transparent 96.88%, #000 96.88%, #000 98.44%, transparent 98.44%);
+          mask: radial-gradient(circle closest-side, transparent 96.88%, #000 96.88%, #000 98.44%, transparent 98.44%);
+}
+
+/* Дуга выигрыша. Стопы те же, что рисует приложение: жёлтое золото
+   по краям, раскалённое ядро ровно на шести часах. */
+.wheel__arc {
+  background: conic-gradient(from calc(180deg - var(--sweep) / 2),
+    var(--gold)    0deg,
+    var(--rust-lt) calc(var(--sweep) * .25),
+    var(--rust)    calc(var(--sweep) * .40),
+    var(--ember)   calc(var(--sweep) * .46),
+    var(--ember)   calc(var(--sweep) * .54),
+    var(--rust)    calc(var(--sweep) * .60),
+    var(--rust-lt) calc(var(--sweep) * .75),
+    var(--gold)    var(--sweep),
+    transparent    var(--sweep));
+}
+.wheel__glow {
+  background: conic-gradient(from calc(180deg - var(--sweep) / 2),
+    rgba(205, 65, 43, .5) 0deg, rgba(205, 65, 43, .5) var(--sweep), transparent var(--sweep));
+  -webkit-mask: radial-gradient(circle closest-side, transparent 70%, #000 74%, #000 94%, transparent 98%);
+          mask: radial-gradient(circle closest-side, transparent 70%, #000 74%, #000 94%, transparent 98%);
+  filter: blur(9px);
+}
+
+.wheel__pin { position: absolute; inset: 0; will-change: transform; }
+.wheel__pin svg { width: 100%; height: 100%; overflow: visible; }
+.pin__shield {
+  stroke: #1a0d0a; stroke-width: 2.2; stroke-linejoin: round;
+  filter: drop-shadow(0 0 5px rgba(205, 65, 43, .65));
+}
+.pin__slot { fill: rgba(26, 13, 10, .78); stroke: none; }
+
+.tick {
+  position: absolute; transform: translate(-50%, -50%);
+  font: 700 .55em var(--body); color: var(--bone);
+  text-shadow: 0 0 3px var(--void), 0 0 3px var(--void), 0 0 3px var(--void);
+}
+.tick--top    { left: 50%;    top: 8.2%;  }
+.tick--left   { left: 8.2%;   top: 50%;   }
+.tick--right  { left: 91.8%;  top: 50%;   }
+
+.wheel__read {
+  position: absolute; inset: 0; margin: 0;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: .18em; pointer-events: none;
+}
+.wheel__pct {
+  font: 900 1.82em/1 var(--body); letter-spacing: -.02em;
+  color: var(--ember);
+  font-variant-numeric: tabular-nums;
+}
+.wheel__cat { font: 600 .84em var(--body); color: #787d78; }
+
+/* карточки ставки и цели — как на экране апгрейда */
+.slots {
+  display: grid; grid-template-columns: 1fr auto 1fr;
+  align-items: center; gap: .7rem;
+  margin: 1.5rem 0 1.1rem;
+}
+.slot {
+  padding: .7rem .6rem .75rem; text-align: center;
+  border: 1px solid var(--edge); border-radius: 12px; background: rgba(0,0,0,.35);
+}
+.slot--src { border-color: rgba(70, 126, 223, .45); }
+.slot--dst { border-color: rgba(205, 65, 43, .5); }
+.slot__cap {
+  margin: 0 0 .5rem; font: 500 .58rem var(--mono);
+  letter-spacing: .16em; text-transform: uppercase; color: var(--ash);
+}
+.slot img { height: 52px; width: auto; margin: 0 auto .5rem; object-fit: contain; }
+.slot__name {
+  margin: 0; font-size: .8rem; font-weight: 700; line-height: 1.25;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.slot__price { margin: .1rem 0 0; font: 500 .78rem var(--mono); color: var(--bone); }
+.slots__arrow { color: var(--rust); font-size: 1.25rem; }
+
+.spin {
+  display: flex; align-items: center; justify-content: center; gap: .55rem;
+  width: 100%; padding: .85rem 1rem; cursor: pointer;
+  border: 0; border-radius: 11px;
+  background: linear-gradient(180deg, var(--rust-lt), var(--rust));
+  color: #fff; font: 800 1.02rem var(--disp);
+  letter-spacing: .01em; text-transform: uppercase;
+  box-shadow: 0 10px 26px -12px rgba(205, 65, 43, .95);
+  transition: transform .12s, filter .18s;
+}
+.spin:hover { filter: brightness(1.1); }
+.spin:active { transform: translateY(1px); }
+.spin[disabled] { cursor: progress; filter: grayscale(.45) brightness(.75); }
+.spin__mark { width: 17px; height: 17px; fill: #fff; flex: none; }
+
+.rig__hint {
+  margin: .95rem 0 1.3rem; min-height: 2.6em;
+  font-size: .8rem; line-height: 1.45; text-align: center; color: var(--ash);
+}
+.rig__hint b { color: var(--bone); font-weight: 700; }
+.rig__hint.is-win  b { color: var(--moss); }
+.rig__hint.is-lose b { color: var(--rust-lt); }
+
+.targets { margin: 0; padding: 0; border: 0; min-width: 0; }
+.targets__row {
+  display: flex; gap: .5rem; overflow-x: auto; min-width: 0;
+  padding-bottom: .5rem; scrollbar-width: thin;
+  scrollbar-color: var(--steel) transparent;
+}
+.targets__row::-webkit-scrollbar { height: 4px; }
+.targets__row::-webkit-scrollbar-thumb { background: var(--steel); border-radius: 4px; }
+
+.chip { flex: none; cursor: pointer; }
+.chip input { position: absolute; opacity: 0; pointer-events: none; }
+.chip__box {
+  display: flex; flex-direction: column; align-items: center; gap: .3rem;
+  width: 66px; padding: .5rem .3rem .45rem;
+  border: 1px solid var(--edge); border-radius: 10px; background: rgba(0,0,0,.3);
+  transition: border-color .15s, background .15s;
+}
+.chip:hover .chip__box { border-color: var(--edge-hot); }
+.chip input:checked + .chip__box { border-color: var(--rust); background: rgba(205, 65, 43, .12); }
+.chip input:focus-visible + .chip__box { outline: 2px solid var(--filament); outline-offset: 2px; }
+.chip__box img { height: 28px; width: auto; object-fit: contain; }
+.chip__pct { font: 700 .68rem var(--mono); color: var(--bone); font-variant-numeric: tabular-nums; }
+.chip__price { font: 500 .54rem var(--mono); color: var(--ash); white-space: nowrap; }
+
+.rig__tally {
+  margin: .9rem 0 0; text-align: center;
+  font: 500 .64rem var(--mono); letter-spacing: .12em;
+  text-transform: uppercase; color: #615c58;
+}
+
+/* ─────────────────── лента каталога ─────────────────── */
+
+.tape {
+  overflow: hidden; user-select: none;
+  border-block: 1px solid var(--edge);
+  padding-block: .85rem;
+  background: linear-gradient(180deg, rgba(242,237,230,.025), transparent);
+  mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 7%, #000 93%, transparent);
+}
+.tape__run {
+  display: flex; gap: 2.4rem; width: max-content;
+  animation: roll 62s linear infinite;
+}
+.tape:hover .tape__run { animation-play-state: paused; }
+@keyframes roll { to { transform: translateX(-50%); } }
+
+.tape__item {
+  display: inline-flex; align-items: baseline; gap: .6rem;
+  font: 500 .74rem var(--mono); white-space: nowrap; color: var(--ash);
+}
+.tape__item b { font-weight: 500; color: var(--bone); }
+.tape__item i { font-style: normal; font-size: .62rem; letter-spacing: .1em; }
+
+.tape__cap {
+  width: var(--wrap); margin: 1rem auto 0;
+  font-size: .8rem; color: var(--ash); text-align: center;
+}
+
+/* ─────────────────── общие полосы ─────────────────── */
+
+.band { width: var(--wrap); margin-inline: auto; padding-block: var(--gap) 0; }
+.band__lede { margin: 0 0 clamp(2.4rem, 4vw, 3.4rem); max-width: 58ch; color: var(--ash-lt); }
+
+/* три шага */
+.flow { list-style: none; margin: 0; padding: 0; display: grid; gap: 1px; background: var(--edge); border-block: 1px solid var(--edge); }
+@media (min-width: 800px) { .flow { grid-template-columns: repeat(3, 1fr); } }
+.flow__step { position: relative; padding: 1.9rem 1.6rem 2.1rem; background: var(--void); }
+.flow__cap {
+  margin: 0 0 1.4rem; font: 500 .64rem var(--mono);
+  letter-spacing: .18em; text-transform: uppercase; color: var(--rust);
+}
+.flow__h { margin: 0 0 .6rem; font: 800 1.12rem/1.25 var(--disp); letter-spacing: -.015em; }
+.flow__step p:last-child { margin: 0; color: var(--ash-lt); font-size: .93rem; }
+/* стрелка между шагами — та же, что в приложении между ставкой и целью */
+@media (min-width: 800px) {
+  .flow__step + .flow__step::before {
+    content: '→'; position: absolute; left: -.72rem; top: 1.75rem;
+    width: 1.45rem; height: 1.45rem; display: grid; place-items: center;
+    background: var(--void); color: var(--rust); font-size: .95rem;
+  }
+}
+
+/* Экраны идут зигзагом: пара «постер + текст» прижимается то к левому
+   краю полосы, то к правому. Ровная колонка на всю ширину оставляла
+   между постером и абзацем дыру шире самого текста. */
+.shot {
+  display: grid; gap: clamp(1.5rem, 3.5vw, 2.8rem);
+  align-items: center;
+  max-width: 880px; margin-bottom: clamp(2.8rem, 5vw, 4.5rem);
+}
+@media (min-width: 860px) {
+  .shot { grid-template-columns: 316px minmax(0, 1fr); }
+  /* В зеркальной строке колонки меняются местами вместе с постером,
+     иначе текст остаётся в узкой колонке под картинку. */
+  .shot--flip { grid-template-columns: minmax(0, 1fr) 316px; margin-left: auto; }
+  .shot--flip > img { order: 2; }
+}
+.shot > img {
+  width: 100%; max-width: 316px; border-radius: 14px;
+  border: 1px solid var(--edge);
+  box-shadow: 0 30px 70px -34px #000;
+}
+.shot__h { margin: 0 0 .75rem; font: 800 clamp(1.25rem, 2.2vw, 1.65rem)/1.15 var(--disp); letter-spacing: -.02em; }
+.shot__body p:last-child { margin: 0; color: var(--ash-lt); max-width: 46ch; }
+
+/* характеристики */
+.spec { margin: 0; display: grid; gap: 0; border-top: 1px solid var(--edge); }
+@media (min-width: 760px) { .spec { grid-template-columns: 1fr 1fr; column-gap: 3.5rem; } }
+.spec > div {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 1rem;
+  padding: .82rem 0; border-bottom: 1px solid var(--edge);
+}
+.spec dt { color: var(--ash-lt); font-size: .93rem; }
+.spec dd {
+  margin: 0; text-align: right; white-space: nowrap;
+  font: 500 .88rem var(--mono); color: var(--bone);
+  font-variant-numeric: tabular-nums;
+}
+
+/* вопросы */
+.faq { margin: 0; display: grid; gap: 0; border-top: 1px solid var(--edge); }
+@media (min-width: 860px) { .faq { grid-template-columns: 1fr 1fr; column-gap: 3.5rem; } }
+.faq > div { padding: 1.35rem 0; border-bottom: 1px solid var(--edge); }
+.faq dt { margin-bottom: .5rem; font: 700 1rem/1.35 var(--body); color: var(--bone); }
+.faq dd { margin: 0; font-size: .93rem; line-height: 1.6; color: var(--ash-lt); max-width: 52ch; }
+
+/* честно */
+.honest {
+  padding: clamp(1.7rem, 4vw, 2.8rem);
+  border: 1px solid var(--edge); border-radius: 16px;
+  background: linear-gradient(180deg, rgba(242,237,230,.028), transparent 60%);
+}
+.honest__cols { display: grid; gap: 1.35rem; }
+@media (min-width: 820px) { .honest__cols { grid-template-columns: 1fr 1fr; column-gap: 3rem; } }
+.honest__cols p { margin: 0; font-size: .93rem; line-height: 1.62; color: var(--ash-lt); }
+.honest__cols b { color: var(--bone); }
+
+/* ─────────────────── документы: политика, удаление ─────────────────── */
+
+.doc { width: var(--wrap); margin-inline: auto; padding-block: clamp(2.5rem, 6vw, 4.5rem) 0; }
+.doc__head { max-width: 64ch; margin-bottom: clamp(2rem, 4vw, 3rem); }
+.doc__title {
+  margin: 0 0 1.1rem;
+  font: 800 clamp(1.85rem, 4.4vw, 3rem)/1.03 var(--disp);
+  letter-spacing: -.025em; text-transform: uppercase;
+}
+.doc__sub { margin: 0; max-width: 58ch; color: var(--ash-lt); font-size: 1.02rem; }
+
+/* Шапка документа — та же плита характеристик, что на главной:
+   пара «поле — значение», волосяные линии, моноширинные значения. */
+.doc__meta { margin: 0 0 clamp(2rem, 4vw, 2.8rem); display: grid; border-top: 1px solid var(--edge); max-width: 64ch; }
+.doc__meta > div {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 1rem;
+  padding: .72rem 0; border-bottom: 1px solid var(--edge);
+}
+.doc__meta dt { color: var(--ash); font-size: .88rem; }
+.doc__meta dd { margin: 0; text-align: right; font: 500 .84rem var(--mono); color: var(--bone); }
+
+.toc {
+  margin: 0 0 clamp(2.4rem, 5vw, 3.4rem); padding: 1.3rem 1.5rem;
+  border: 1px solid var(--edge); border-radius: 14px;
+  background: linear-gradient(180deg, rgba(242,237,230,.03), transparent 70%);
+  max-width: 64ch;
+}
+.toc__cap {
+  margin: 0 0 .8rem; font: 500 .64rem var(--mono);
+  letter-spacing: .18em; text-transform: uppercase; color: var(--ash);
+}
+.toc ol { margin: 0; padding: 0; list-style: none; counter-reset: toc; display: grid; gap: .42rem; }
+.toc li { counter-increment: toc; display: flex; gap: .7rem; font-size: .93rem; }
+.toc li::before { content: counter(toc, decimal-leading-zero); color: var(--rust); font: 500 .74rem var(--mono); padding-top: .18em; }
+.toc a { color: var(--ash-lt); text-decoration: none; border-bottom: 1px solid transparent; }
+.toc a:hover { color: var(--bone); border-bottom-color: var(--edge-hot); }
+
+.prose { max-width: 68ch; }
+.prose h2 {
+  margin: clamp(2.4rem, 5vw, 3.2rem) 0 1rem;
+  font: 800 clamp(1.18rem, 2.2vw, 1.5rem)/1.2 var(--disp);
+  letter-spacing: -.018em; text-transform: uppercase;
+  scroll-margin-top: 5rem;
+}
+.prose h3 { margin: 2rem 0 .7rem; font: 700 1.02rem/1.3 var(--body); color: var(--bone); }
+.prose p, .prose li { color: var(--ash-lt); }
+.prose p { margin: 0 0 1rem; }
+.prose ul, .prose ol { margin: 0 0 1.2rem; padding-left: 1.25rem; }
+.prose li { margin: .38rem 0; }
+.prose li::marker { color: var(--rust); }
+.prose b, .prose strong { color: var(--bone); font-weight: 700; }
+.prose code {
+  font: 500 .88em var(--mono); color: var(--filament);
+  background: rgba(242,237,230,.05); padding: .12em .38em; border-radius: 4px;
+}
+.prose hr { border: 0; border-top: 1px solid var(--edge); margin: 2.4rem 0; }
+
+.prose table { width: 100%; border-collapse: collapse; margin: 1.2rem 0 1.6rem; font-size: .9rem; }
+.prose th, .prose td { padding: .62rem .8rem; text-align: left; border-bottom: 1px solid var(--edge); vertical-align: top; }
+.prose th {
+  font: 500 .66rem var(--mono); letter-spacing: .12em;
+  text-transform: uppercase; color: var(--ash); border-bottom-color: var(--edge-hot);
+}
+.prose td { color: var(--ash-lt); }
+.prose .scroll-x { overflow-x: auto; }
+
+.doc__note {
+  margin: 2.6rem 0 0; padding: 1.2rem 1.4rem;
+  border: 1px solid var(--edge); border-left: 2px solid var(--rust); border-radius: 0 12px 12px 0;
+  background: rgba(205, 65, 43, .06);
+}
+.doc__note p { margin: 0; font-size: .93rem; color: var(--ash-lt); }
+.doc__note p + p { margin-top: .7rem; }
+
+.back {
+  display: inline-flex; align-items: center; gap: .5rem; margin-top: clamp(2.6rem, 5vw, 3.6rem);
+  font: 500 .74rem var(--mono); letter-spacing: .1em; text-transform: uppercase;
+  color: var(--ash); text-decoration: none;
+}
+.back:hover { color: var(--bone); }
+.back span { color: var(--rust); }
+
+/* ─────────────────── 404 ─────────────────── */
+
+.lost { width: var(--wrap); margin-inline: auto; padding-block: clamp(4rem, 12vw, 9rem) 0; max-width: 56ch; }
+.lost__code { margin: 0 0 1.2rem; font: 900 clamp(3.4rem, 12vw, 6.5rem)/1 var(--disp); letter-spacing: -.04em; color: var(--rust); }
+.lost__h { margin: 0 0 1rem; font: 800 clamp(1.4rem, 3vw, 2rem)/1.1 var(--disp); text-transform: uppercase; letter-spacing: -.02em; }
+.lost__lead { margin: 0 0 1.6rem; color: var(--ash-lt); }
+
+/* подвал */
+.site-foot { width: var(--wrap); margin: var(--gap) auto 0; padding-bottom: 3.5rem; }
+.site-foot__in {
+  display: flex; flex-wrap: wrap; gap: 1.8rem;
+  align-items: flex-start; justify-content: space-between;
+}
+.site-foot__brand { display: flex; align-items: center; gap: .7rem; }
+.site-foot__brand p { margin: 0; line-height: 1.35; }
+.site-foot__dom { font: 500 .74rem var(--mono); color: var(--ash); }
+.site-foot__nav { display: flex; flex-direction: column; gap: .45rem; }
+.site-foot__nav a { color: var(--ash-lt); font-size: .88rem; text-decoration: none; border-bottom: 1px solid var(--edge); width: fit-content; }
+.site-foot__nav a:hover { color: var(--bone); border-color: var(--edge-hot); }
+.site-foot__fine {
+  margin: 2.6rem 0 0; padding-top: 1.4rem; border-top: 1px solid var(--edge);
+  font-size: .76rem; line-height: 1.6; color: #6d6862; max-width: 78ch;
+}
+
+/* ─────────────────── вход страницы ───────────────────
+   Один заход: строки заголовка встают по очереди, за ними лид и кнопка,
+   и в это же время дуга колеса выезжает на свои 25,07 %. Дальше
+   страница ведёт себя тихо. */
+
+@keyframes rise { from { opacity: 0; transform: translateY(.42em); } }
+@keyframes fade { from { opacity: 0; transform: translateY(12px); } }
+
+.hero__copy .eyebrow      { animation: fade .55s both; }
+.hero__title span         { animation: rise .8s cubic-bezier(.22, 1, .36, 1) backwards; }
+.hero__title span:nth-child(1) { animation-delay: .07s; }
+.hero__title span:nth-child(2) { animation-delay: .14s; }
+.hero__title span:nth-child(3) { animation-delay: .21s; }
+.hero__title span:nth-child(4) { animation-delay: .28s; }
+.hero__copy .lede         { animation: fade .7s .38s both; }
+.hero__copy .cta          { animation: fade .7s .48s both; }
+.rig                      { animation: fade .9s .26s both; }
+
+/* ─────────────────── появление при скролле ─────────────────── */
+
+.reveal { opacity: 0; transform: translateY(14px); transition: opacity .7s ease, transform .7s cubic-bezier(.22,1,.36,1); }
+.reveal.is-in { opacity: 1; transform: none; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .tape__run,
+  .dot,
+  .hero__copy .eyebrow,
+  .hero__title span,
+  .hero__copy .lede,
+  .hero__copy .cta,
+  .rig { animation: none; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+}

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Удаление аккаунта и данных — RustGrade</title>
+<meta name="description" content="Как удалить аккаунт RustGrade и все связанные данные: куда написать, что будет удалено и в какие сроки. Можно стереть только игровой прогресс, сохранив аккаунт.">
+<meta name="theme-color" content="#080706">
+<link rel="canonical" href="https://rustgrade.pro/delete-account/">
+
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="RustGrade">
+<meta property="og:title" content="Удаление аккаунта и данных — RustGrade">
+<meta property="og:description" content="Куда написать, что будет удалено и в какие сроки.">
+<meta property="og:url" content="https://rustgrade.pro/delete-account/">
+<meta property="og:image" content="https://rustgrade.pro/assets/og.jpg">
+<meta property="og:locale" content="ru_RU">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="icon" href="../assets/logo.svg" type="image/svg+xml">
+<link rel="icon" href="../assets/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<link rel="stylesheet" href="../assets/fonts.css">
+<link rel="stylesheet" href="../assets/site.css">
+</head>
+<body>
+
+<a class="skip" href="#main">Перейти к содержанию</a>
+
+<header class="topbar">
+  <div class="topbar__in">
+    <a class="brand" href="../" aria-label="RustGrade, на главную">
+      <svg class="brand__mark" viewBox="0 0 512 512" aria-hidden="true" focusable="false">
+        <rect width="512" height="512" rx="140" fill="#C43426"/>
+        <path d="M 256 130 L 384 226 L 384 277 L 256 181 L 128 277 L 128 226 Z" fill="#fff"/>
+        <path d="M 256 235 L 384 331 L 384 382 L 256 286 L 128 382 L 128 331 Z" fill="#fff"/>
+      </svg>
+      <span class="brand__name">RustGrade</span>
+    </a>
+    <p class="topbar__status">Удаление аккаунта</p>
+  </div>
+</header>
+
+<main id="main" class="doc">
+
+  <div class="doc__head">
+    <p class="eyebrow">Документ</p>
+    <h1 class="doc__title">Удаление аккаунта и данных</h1>
+    <p class="doc__sub">
+      Здесь описано, как удалить аккаунт в приложении RustGrade и все связанные
+      с ним данные. Запрос бесплатный, объяснять причину не нужно.
+    </p>
+  </div>
+
+  <dl class="doc__meta">
+    <div><dt>Приложение</dt><dd>com.rustgrade.rustgrade</dd></div>
+    <div><dt>Куда писать</dt><dd><a href="mailto:narodniy.team@gmail.com">narodniy.team@gmail.com</a></dd></div>
+    <div><dt>Срок удаления</dt><dd>до 30 дней</dd></div>
+  </dl>
+
+  <nav class="toc" aria-labelledby="toc-cap">
+    <p class="toc__cap" id="toc-cap">Содержание</p>
+    <ol>
+      <li><a href="#request">Как запросить удаление</a></li>
+      <li><a href="#what">Что будет удалено</a></li>
+      <li><a href="#when">Сроки</a></li>
+      <li><a href="#partial">Удалить только игровые данные</a></li>
+      <li><a href="#after">Что происходит с приложением после удаления</a></li>
+      <li><a href="#self">Удаление данных без обращения к нам</a></li>
+      <li><a href="#guest">Если вы играете без входа</a></li>
+    </ol>
+  </nav>
+
+  <div class="prose">
+
+    <h2 id="request">Как запросить удаление</h2>
+
+    <ol>
+      <li>Напишите письмо на адрес <b><a href="mailto:narodniy.team@gmail.com?subject=%D0%A3%D0%B4%D0%B0%D0%BB%D0%B5%D0%BD%D0%B8%D0%B5%20%D0%B0%D0%BA%D0%BA%D0%B0%D1%83%D0%BD%D1%82%D0%B0%20RustGrade">narodniy.team@gmail.com</a></b></li>
+      <li>В теме укажите: <b>Удаление аккаунта RustGrade</b></li>
+      <li>В письме укажите <b>адрес электронной почты того аккаунта Google</b>,
+        которым вы входили в приложение. Он нужен, чтобы найти вашу запись:
+        других сведений о вас у нас нет</li>
+      <li>Отправьте письмо <b>с того же адреса</b>, что указали в пункте 3 —
+        так мы убедимся, что запрос исходит от владельца аккаунта</li>
+      <li>Мы подтвердим получение и сообщим, когда удаление выполнено</li>
+    </ol>
+
+    <p>Никаких других действий не требуется.</p>
+
+    <h2 id="what">Что будет удалено</h2>
+
+    <div class="scroll-x">
+      <table>
+        <thead>
+          <tr><th>Данные</th><th>Где хранятся</th><th>Что с ними будет</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Идентификатор аккаунта</td><td>Firebase Authentication</td><td>удаляется</td></tr>
+          <tr><td>Адрес электронной почты</td><td>Firebase Authentication</td><td>удаляется</td></tr>
+          <tr><td>Отображаемое имя</td><td>Firebase Authentication</td><td>удаляется</td></tr>
+          <tr><td>Ссылка на фото профиля</td><td>Firebase Authentication</td><td>удаляется</td></tr>
+          <tr><td>Баланс и список предметов</td><td>Cloud Firestore</td><td>удаляется</td></tr>
+          <tr><td>Статистика и история апгрейдов</td><td>Cloud Firestore</td><td>удаляется</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p>Удаляется <b>всё</b>: и учётная запись, и документ с игровым прогрессом.
+      Данных, которые мы сохраняли бы после удаления, нет.</p>
+
+    <h2 id="when">Сроки</h2>
+
+    <ul>
+      <li><b>До 30 дней</b> — удаление учётной записи и документа с прогрессом
+        после получения запроса.</li>
+      <li><b>До 30 дней после этого</b> — резервные копии Firebase могут ещё
+        содержать удалённые данные, дальше они перезаписываются автоматически
+        и восстановлению не подлежат.</li>
+    </ul>
+
+    <h2 id="partial">Удалить только игровые данные, сохранив аккаунт</h2>
+
+    <p>Если вы хотите стереть игровой прогресс, но остаться в аккаунте —
+      например, начать игру заново, — запросите частичное удаление.</p>
+
+    <ol>
+      <li>Напишите письмо на адрес <b><a href="mailto:narodniy.team@gmail.com?subject=%D0%A1%D0%B1%D1%80%D0%BE%D1%81%20%D0%BF%D1%80%D0%BE%D0%B3%D1%80%D0%B5%D1%81%D1%81%D0%B0%20RustGrade">narodniy.team@gmail.com</a></b></li>
+      <li>В теме укажите: <b>Сброс прогресса RustGrade</b></li>
+      <li>Укажите <b>адрес электронной почты того аккаунта Google</b>,
+        которым вы входили в приложение</li>
+      <li>Отправьте письмо <b>с того же адреса</b> — так мы убедимся,
+        что запрос исходит от владельца</li>
+      <li>Мы подтвердим получение и сообщим, когда удаление выполнено</li>
+    </ol>
+
+    <p><b>Что будет удалено:</b> баланс, список предметов, статистика побед
+      и поражений, история апгрейдов.</p>
+
+    <p><b>Что останется:</b> учётная запись и профиль — идентификатор аккаунта,
+      адрес электронной почты, отображаемое имя и ссылка на фото. Входить
+      в приложение вы сможете как обычно, прогресс начнётся с нуля.</p>
+
+    <p><b>Сроки те же:</b> до 30 дней на удаление, до 30 дней на перезапись
+      резервных копий.</p>
+
+    <h2 id="after">Что происходит с приложением после удаления</h2>
+
+    <p>Приложение продолжает работать в гостевом режиме: играть можно как
+      обычно, прогресс будет храниться только на вашем устройстве. Заново
+      войти под тем же аккаунтом Google тоже можно — при этом начнётся
+      новый, пустой прогресс.</p>
+
+    <h2 id="self">Удаление данных без обращения к нам</h2>
+
+    <ul>
+      <li><b>Локальные данные.</b> Удалите приложение или очистите его данные
+        в настройках Android — весь прогресс на устройстве будет стёрт.</li>
+      <li><b>Доступ к аккаунту Google.</b> Отозвать разрешение, выданное
+        приложению, можно самостоятельно на странице
+        <a href="https://myaccount.google.com/permissions" rel="noopener">myaccount.google.com/permissions</a>.
+        Это закрывает приложению доступ к аккаунту, но <b>не удаляет</b>
+        уже сохранённые данные — для этого напишите нам.</li>
+    </ul>
+
+    <h2 id="guest">Если вы играете без входа</h2>
+
+    <p>Данные не собираются вообще: прогресс лежит только на устройстве
+      и никуда не передаётся. Удалять на серверах нечего — достаточно
+      удалить приложение.</p>
+
+    <div class="doc__note">
+      <p>Что именно и зачем собирает приложение, описано в
+        <a href="../privacy/">политике конфиденциальности</a>.</p>
+    </div>
+
+  </div>
+
+  <a class="back" href="../"><span>←</span> На главную</a>
+
+</main>
+
+<footer class="site-foot">
+  <hr class="rule">
+  <div class="site-foot__in">
+    <div class="site-foot__brand">
+      <svg class="brand__mark" viewBox="0 0 512 512" aria-hidden="true" focusable="false">
+        <rect width="512" height="512" rx="140" fill="#C43426"/>
+        <path d="M 256 130 L 384 226 L 384 277 L 256 181 L 128 277 L 128 226 Z" fill="#fff"/>
+        <path d="M 256 235 L 384 331 L 384 382 L 256 286 L 128 382 L 128 331 Z" fill="#fff"/>
+      </svg>
+      <p><span class="brand__name">RustGrade</span><br><span class="site-foot__dom">rustgrade.pro</span></p>
+    </div>
+    <nav class="site-foot__nav" aria-label="Документы">
+      <a href="../">Главная</a>
+      <a href="../privacy/">Политика конфиденциальности</a>
+      <a href="mailto:narodniy.team@gmail.com">narodniy.team@gmail.com</a>
+    </nav>
+  </div>
+  <p class="site-foot__fine">
+    © 2026 RustGrade. Игровой симулятор. Реальные деньги не принимаются
+    и не выигрываются. Rust — товарный знак Facepunch Studios Ltd;
+    приложение с Facepunch Studios Ltd и Valve Corporation не связано.
+  </p>
+</footer>
+
+</body>
+</html>
