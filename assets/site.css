@@ -188,6 +188,8 @@ a:hover { color: var(--bone); }
   border: 1px solid var(--edge-hot); border-radius: 12px;
   background: linear-gradient(180deg, rgba(242,237,230,.05), rgba(242,237,230,.01));
 }
+a.play { text-decoration: none; transition: border-color .2s; }
+a.play:hover { border-color: var(--bone); }
 .play__icon { width: 33px; height: auto; flex: none; }
 .play__text { display: flex; flex-direction: column; line-height: 1.15; }
 .play__small { font: 500 .66rem var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--ash); }
